@@ -3,20 +3,38 @@ create database desafiomvc;
 use desafiomvc;
 
 CREATE TABLE rubro(
-idRubro int AUTO_INCREMENT PRIMARY key,
+	idRubro int AUTO_INCREMENT PRIMARY key,
     rubro varchar(100),
     descripcion text
 );
 
 create table empresa(
-    codigoEmpresa varchar(6) primary key,
+	id int primary key auto_increment,
+    codigoEmpresa varchar(6) ,
     nombre varchar(100) not null,
     direccion varchar(200) not null,
     contacto varchar(100) not null,
     telefono varchar(10) not null,
     rubro int not null,
-    cobro double not null default 0.0
+    cobro double not null default 0.0,
+    foreign key(rubro) references rubro(idRubro)
 );
+
+select * from empresa;
+
+delimiter //
+create procedure insertarEmpresa(IN _nombre varchar(100), _direccion varchar(200), _contacto varchar(100), _telefono varchar(10), _rubro int(11), _cobro double)
+begin
+	set @_id = (SELECT `AUTO_INCREMENT`
+	FROM  INFORMATION_SCHEMA.TABLES
+	WHERE TABLE_SCHEMA = 'desafiomvc'
+	AND   TABLE_NAME   = 'empresa');
+	insert into empresa (nombre, codigoEmpresa, direccion, contacto, telefono, rubro, cobro) values
+	(_nombre, concat('EMP',LPAD(@_id,3,'0')), _direccion, _contacto, _telefono, _rubro, _cobro);
+end//
+delimiter ;
+
+call insertarEmpresa('Empresa1','direccion de empresa1','contacto de empresa','7501-96324',1, 15.5);
 
 create table estado(
     idEstado int primary key auto_increment,
@@ -33,7 +51,7 @@ create table oferta(
     fechaLimite datetime not null ,
     limiteCupones int null,
     descripcion varchar(200) not null default 'Sin descripcion',
-    otrosDetalles varchar(200) not null default 'Sin descripcion',
+    otrosDetalles varchar(200) not null default 'Sin detalles',
     empresa varchar(6) not null,
     estado int not null,
     foreign key(estado) references estado(idEstado),
@@ -45,11 +63,13 @@ CREATE table justificacionRechazos(
     justificacion text,
     FOREIGN key (oferta) REFERENCES oferta(idOferta)
 );
+
 create table tipoUsuario(
     idTipo int primary key auto_increment,
     tipo varchar(30),
     descripcion varchar(200)
 );
+
 create table usuario(
     idUsuario int AUTO_INCREMENT primary key,
     nombres varchar(100) not null,
@@ -74,6 +94,7 @@ create table cliente(
     telefono varchar(10) not null,
     FOREIGN key (usuario) REFERENCES usuario(idUsuario)
 );
+
 create table compra(
     idCompra int AUTO_INCREMENT PRIMARY key,
     fecha datetime not null,
@@ -108,6 +129,6 @@ INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Cliente', 'Consumidor
 
 /* Usuarios por defecto */
 insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Alejandro","Alejo","alejandroalejo714@gmail.com",SHA2("Password01",256),1);
-insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Dennis","Cruz","denniscruz@gmail.com",SHA2("Password01",256),2);
-insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Javier","Pablo","javierpablo@gmail.com",SHA2("Password01",256),3)
+insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Denys","Cruz","dennyscruz20@gmail.com",SHA2("Password01",256),2);
+insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Javier","Pablo","javierpablo@gmail.com",SHA2("Password01",256),3);
 
