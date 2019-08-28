@@ -9,8 +9,8 @@ CREATE TABLE rubro(
 );
 
 create table empresa(
+    codigoEmpresa varchar(6),
 	id int primary key auto_increment,
-    codigoEmpresa varchar(6) ,
     nombre varchar(100) not null,
     direccion varchar(200) not null,
     contacto varchar(100) not null,
@@ -19,8 +19,6 @@ create table empresa(
     cobro double not null default 0.0,
     foreign key(rubro) references rubro(idRubro)
 );
-
-select * from empresa;
 
 delimiter //
 create procedure insertarEmpresa(IN _nombre varchar(100), _direccion varchar(200), _contacto varchar(100), _telefono varchar(10), _rubro int(11), _cobro double)
@@ -31,7 +29,7 @@ begin
 	AND   TABLE_NAME   = 'empresa');
 	insert into empresa (nombre, codigoEmpresa, direccion, contacto, telefono, rubro, cobro) values
 	(_nombre, concat('EMP',LPAD(@_id,3,'0')), _direccion, _contacto, _telefono, _rubro, _cobro);
-end//
+end //
 delimiter ;
 
 create table estado(
@@ -50,10 +48,10 @@ create table oferta(
     limiteCupones int null,
     descripcion varchar(200) not null default 'Sin descripcion',
     otrosDetalles varchar(200) not null default 'Sin detalles',
-    empresa varchar(6) not null,
-    estado int not null,
+    empresa int,
+    estado int,
     foreign key(estado) references estado(idEstado),
-    foreign key (empresa) references empresa(codigoEmpresa)
+    foreign key (empresa) references empresa(id)
 );
 
 CREATE table justificacionRechazos(
@@ -128,4 +126,3 @@ INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Cliente', 'Consumidor
 insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Alejandro","Alejo","alejandroalejo714@gmail.com",SHA2("Password01",256),1);
 insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Denys","Cruz","dennyscruz20@gmail.com",SHA2("Password01",256),2);
 insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Javier","Pablo","javierpablo@gmail.com",SHA2("Password01",256),3);
-
