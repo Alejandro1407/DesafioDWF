@@ -80,12 +80,10 @@ create table usuario(
     FOREIGN key (tipo) REFERENCES tipoUsuario(idTipo)  
 );
 
-create table gestorEmpresa(
-    usuario int not null,
-    empresa varchar(6) not null,
-    PRIMARY key (usuario,empresa),
-    FOREIGN key (usuario) references usuario(idUsuario),
-    FOREIGN key (empresa) REFERENCES empresa(codigoEmpresa)
+create table usuarioEmpresa(
+empresa varchar(6) primary key,
+usuario int not null,
+FOREIGN key (usuario) references usuario(idUsuario)
 );
 
 create table cliente(
@@ -107,6 +105,7 @@ CREATE table cupon(
     codigoCupon varchar(13) primary key,
     oferta int not null,
     compra int not null,
+	canjeo bit not null DEFAULT 0,
     FOREIGN key (compra) REFERENCES compra(idCompra)
 );
 
