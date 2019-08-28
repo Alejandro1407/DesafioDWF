@@ -34,8 +34,6 @@ begin
 end//
 delimiter ;
 
-call insertarEmpresa('Empresa1','direccion de empresa1','contacto de empresa','7501-96324',1, 15.5);
-
 create table estado(
     idEstado int primary key auto_increment,
     estado varchar(100) not null
