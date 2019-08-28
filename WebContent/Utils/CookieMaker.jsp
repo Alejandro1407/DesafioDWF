@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%
+	HttpSession sesion = request.getSession(); //Para controlar las sesiones
+	
 	String id = request.getAttribute("id").toString();
 	String idTipoval =  request.getAttribute("idTipo").toString();
 	
@@ -17,14 +19,17 @@
 	response.addCookie(idTipo);
 	
 	if(idTipoval.equals("1")){
+		sesion.setAttribute("Administrador",NombreUser);
 		response.sendRedirect("/DesafioMVC/Administrador");
 		return;
 	}
 	if(idTipoval.equals("2")){
+		sesion.setAttribute("Empresa",NombreUser);
 		response.sendRedirect("/DesafioMVC/Empresa");
 		return;
 	}
 	if(idTipoval.equals("3")){
+		sesion.setAttribute("Cliente",NombreUser);
 		response.sendRedirect("/DesafioMVC/Cliente");
 		return;
 	}

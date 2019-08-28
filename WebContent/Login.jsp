@@ -102,9 +102,9 @@
 
                   <div class="text-center">
                       <%
-                          if(request.getAttribute("Error") != null){
+                          if( (request.getAttribute("Error") != null) || (request.getParameter("Error") != null ) ){
                       %>
-                        	<p class="alert alert-danger"><%= request.getAttribute("Error") %></p>
+                        	<p class="alert alert-danger"><% if(request.getAttribute("Error") != null) { out.print(request.getAttribute("Error")); } else{ out.print(request.getParameter("Error")); } %></p>
                       <%
                            }
                       %>
@@ -180,11 +180,7 @@
 
   </footer>
   <!--/.Footer-->
-
-
-<footer>
 	<%@ include file='/Utils/ImportJS.jsp' %>
-</footer>
 </body>
 
 </html>
