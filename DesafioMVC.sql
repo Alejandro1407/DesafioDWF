@@ -166,12 +166,12 @@ begin
     set @random = LPAD(FLOOR(1 + RAND() * (9999999 - 1 + 1)),7,'0');
     set @codCupon = concat(@_codemp,@random);
     
-    /*while @random not in (select random from cupon) do
-		begin*/
+    while @random not in (select random from cupon) do
+		begin
 			insert into cupon (random, codigoCupon, oferta, compra, canjeo)
             values (@random, @codCupon, _oferta, _compra, _canjeo);
-        /*end;
-	end while;*/
+        end;
+	end while;
 end//
 delimiter ;
 
