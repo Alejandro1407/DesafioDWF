@@ -67,13 +67,6 @@
 				<%
 					}
 				%>
-		
-			  <a href="cambiar.jsp" class="list-group-item list-group-item-action waves-effect">
-	          	<i class="fas fa-lock mr-3"></i>Cambiar Contraseña
-	         </a>
-	         <a href="../Servicios/cerrarsesion.jsp" class="list-group-item red-text list-group-item-action waves-effect">
-	          	<i class="fas fa-sign-out-alt mr-3"></i>Cerrra Sesion
-	          </a>
 	     </div>
           
     </div>

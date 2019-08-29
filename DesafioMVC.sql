@@ -132,7 +132,7 @@ create table compra(
     fecha datetime not null,
     total double not null,
     cliente int not null,
-    FOREIGN key (cliente) REFERENCES cliente(usuario)
+    FOREIGN key (cliente) RFERENCES cliente(usuario)
 );
 
 
@@ -175,6 +175,21 @@ CREATE PROCEDURE loguearse (Usuario VARCHAR(50),Contrasenia VARCHAR(50))
         WHERE u.correo = Usuario AND u.contrasenia = SHA2(Contrasenia,256); 
     END $$
 delimiter ;
+
+delimiter //
+    create procedure ChangePass(idusuario INT,OldPass VARCHAR(50),newcontrasenia VARCHAR(50))
+    begin
+        SET @valid = (select count(*) from usuario where idUsuario = idusuario AND contrasenia = SHA2(OldPass,256));
+        if @valid > 0 then
+            UPDATE usuario SET contrasenia=SHA2(newcontrasenia,256) WHERE idUsuario = idusuario;
+            SELECT CONCAT("Actualizada correctamente");
+        else
+            SELECT CONCAT("Contraseña incorrecta");
+        end if;
+end //
+delimiter ;
+
+
 
 /* Tipos de Usuarios */ 
 INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Administrador', 'Administrador de La Cuponera');

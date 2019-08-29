@@ -33,7 +33,9 @@ public class AdministradorController extends HttpServlet {
 		Opciones.add(new Opcion("DashBoard","/DesafioMVC/Administrador","fas fa-chart-pie",true));
 		Opciones.add(new Opcion("Empresas","/DesafioMVC/Administrador/Empresa","fas fa-building",false));
 		Opciones.add(new Opcion("Rubros","/DesafioMVC/Administrador/Rubros","fas fa-briefcase",false));
-		Opciones.add(new Opcion("Clientes","/DesafioMVC/Administrador/Cliente","fas fa-users",false));
+		Opciones.add(new Opcion("Clientes","/DesafioMVC/Administrador/Clientes","fas fa-users",false));
+		Opciones.add(new Opcion("Cambiar Contraseña","/DesafioMVC/Administrador?op=change","fas fa-lock",false));
+		Opciones.add(new Opcion("Cerrar Sesion","/DesafioMVC/Login?op=cerrar","fas fa-sign-out-alt red-text",false));
 		response.setContentType("text/html;charset=UTF-8");
 		try{
 				String Operacion =  "";
@@ -41,6 +43,14 @@ public class AdministradorController extends HttpServlet {
 					Operacion = request.getParameter("op");
 				}
 				switch (Operacion) {
+					case "change":
+					Opcion temp = Opciones.get(4);
+					Opcion temp1 = Opciones.get(0);
+					temp.setIsActive(true);
+					temp1.setIsActive(false);
+					request.setAttribute("Opciones", Opciones);
+					request.getRequestDispatcher("CambiarPassword.jsp").forward(request, response);
+					break;
 					default:
 						request.setAttribute("Opciones", Opciones);
 						request.getRequestDispatcher("/Administrador/index.jsp").forward(request, response);

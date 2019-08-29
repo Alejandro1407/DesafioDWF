@@ -36,6 +36,9 @@ public class SesionController extends HttpServlet {
 				case "iniciar":
 					IniciarSesion(request,response);
 					break;
+				case "cerrar":
+					CerrarSesion(request,response);
+					break;
 				default:
 					request.getRequestDispatcher("/Login.jsp").forward(request, response);
 					break;
@@ -94,6 +97,22 @@ public class SesionController extends HttpServlet {
 		}
 		response.sendRedirect(URL);
 		return;
+	}
+	
+	private void CerrarSesion(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		  HttpSession sesion = request.getSession();
+		  sesion.invalidate();
+		  Cookie[] cookieArray = request.getCookies();
+		  for(int i=0; i < cookieArray.length; i++)
+		    {
+		            //Deleting the cookie
+		            cookieArray[i].setMaxAge(0);
+		            response.addCookie(cookieArray[i]);
+		    }
+		  request.setAttribute("Error", "Sesion Finalizada");
+		  request.getRequestDispatcher("/Login.jsp").forward(request, response);
+		  return;
+		
 	}
 	
 }//Clase
