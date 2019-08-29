@@ -8,9 +8,12 @@ CREATE TABLE rubro(
     descripcion text
 );
 
+insert into rubro (rubro, descripcion) values ('Algo','Descripcion');
+select * from rubro;
+
 create table empresa(
+	id int auto_increment primary key,
     codigoEmpresa varchar(6),
-	id int primary key auto_increment,
     nombre varchar(100) not null,
     direccion varchar(200) not null,
     contacto varchar(100) not null,
@@ -32,13 +35,22 @@ begin
 end //
 delimiter ;
 
+call desafiomvc.insertarEmpresa('Davivienda', 'el centro we', 'Lic Davivienda', '2265-9601', 1, 10);
+
 create table estado(
     idEstado int primary key auto_increment,
     estado varchar(100) not null
 );
 
+insert into estado(estado) values ('En espera de aprobacion');
+insert into estado(estado) values ('Oferta aprobada');
+insert into estado(estado) values ('Oferta rechazada');
+insert into estado(estado) values ('Oferta descartada');
+insert into estado(estado) values ('Oferta activa');
+insert into estado(estado) values ('Oferta vencida');
+
 create table oferta(
-    idOferta int primary key,
+    idOferta int primary key auto_increment,
     titulo varchar (100) not null,
     precioRegular double not null,
     precioOferta double not null,
@@ -48,22 +60,58 @@ create table oferta(
     limiteCupones int null,
     descripcion varchar(200) not null default 'Sin descripcion',
     otrosDetalles varchar(200) not null default 'Sin detalles',
-    empresa int,
-    estado int,
+    empresa int not null,
+    estado int not null default 1,
     foreign key(estado) references estado(idEstado),
     foreign key (empresa) references empresa(id)
 );
 
+delimiter //
+create procedure ingresarOferta(IN _titulo varchar(100), _precioRegular double, _precioOferta double, _fechaInicio datetime, _fechaFin datetime, 
+_fechaLimite datetime, _limiteCupones int, _descripcion varchar(200), _otrosDetalles varchar(200), _empresa int)
+begin
+	insert into oferta(titulo, precioRegular, precioOferta, fechaInicio, fechaFin, fechaLimite, limiteCupones, descripcion, otrosDetalles, empresa, estado)
+    values (_titulo, _precioRegular, _precioOferta, _fechaInicio, _fechaFin, _fechaLimite, _limiteCupones, _descripcion, _otrosDetalles, _empresa, default);
+end//
+delimiter ;
+
+call desafiomvc.ingresarOferta('Dinero Gratis', 100, 99.99, '2019-08-29', '2019-08-30', '2019-08-30', 5, 'Aproveche we', 'No', 1);
+
 CREATE table justificacionRechazos(
     oferta int PRIMARY key, 
-    justificacion text,
+    justificacion varchar(200),
     FOREIGN key (oferta) REFERENCES oferta(idOferta)
 );
+
+delimiter //
+create procedure rechazarOferta(IN _idOferta int, _justificacion varchar(200))
+begin
+	update oferta set estado = 3 where idOferta = _idOferta;
+    insert into justificacionRechazos values (_idOferta, _justificacion);
+end//
+delimiter ;
+
+delimiter //
+create procedure descartarOferta (IN _idOferta int) 
+begin
+	update oferta set estado = 4 where idOferta = _idOferta;
+end//
+delimiter ;
+
+delimiter //
+create procedure reintentarOferta (IN _idOferta int, _titulo varchar(100), _precioRegular double, _precioOferta double, _fechaInicio datetime, _fechaFin datetime, 
+_fechaLimite datetime, _limiteCupones int, _descripcion varchar(200), _otrosDetalles varchar(200), _empresa int)
+begin
+	update oferta set titulo = _titulo, precioRegular = _precioRegular, precioOferta = _precioOferta, fechaInicio = _fechaInicio, fechaFin = _fechaFin,
+    fechaLimite = _fechaLimite, limiteCupones = _limiteCupones, descripcion = _descripcion, otrosDetalles = _otrosDetalles, empresa = _empresa, estado = 1
+    where idOferta = _idOferta;
+end//
+delimiter ;
 
 create table tipoUsuario(
     idTipo int primary key auto_increment,
     tipo varchar(30),
-    descripcion varchar(200)
+    descripcion varchar(200) default 'sin descripcion'
 );
 
 create table usuario(
@@ -72,15 +120,14 @@ create table usuario(
     apellidos varchar(100) not null,
     correo varchar(200) not null unique,
     contrasenia varchar(100) not null,
+    empresa int,
     tipo int not null,
-    FOREIGN key (tipo) REFERENCES tipoUsuario(idTipo)  
+    FOREIGN key (tipo) REFERENCES tipoUsuario(idTipo),
+    foreign key (empresa) references empresa(id)
 );
+insert into usuario(nombres, apellidos, correo, contrasenia, tipo)
+values ('Javier', 'Ibarra','eldios@hotmail.com','contrasenia',3);
 
-create table usuarioEmpresa(
-empresa varchar(6) primary key,
-usuario int not null,
-FOREIGN key (usuario) references usuario(idUsuario)
-);
 
 create table cliente(
     usuario int primary key,
@@ -88,6 +135,8 @@ create table cliente(
     telefono varchar(10) not null,
     FOREIGN key (usuario) REFERENCES usuario(idUsuario)
 );
+insert cliente values (1,'12345678-9','6598-8963');
+
 
 create table compra(
     idCompra int AUTO_INCREMENT PRIMARY key,
@@ -96,14 +145,37 @@ create table compra(
     cliente int not null,
     FOREIGN key (cliente) REFERENCES cliente(usuario)
 );
+insert into compra(fecha, total, cliente) values (current_timestamp(), 99.99, 1);
 
-CREATE table cupon(
-    codigoCupon varchar(13) primary key,
+
+create table cupon(
+	id int primary key auto_increment,
+    random int,
+    codigoCupon varchar(10),
     oferta int not null,
     compra int not null,
 	canjeo bit not null DEFAULT 0,
     FOREIGN key (compra) REFERENCES compra(idCompra)
 );
+
+delimiter //
+create procedure ingresarCupon(IN _oferta int, _compra int, _canjeo int)
+begin
+	set @_empresa = (select nombre from empresa join oferta on oferta.empresa = empresa.id where oferta.idOferta = _oferta limit 1);
+    set @_codemp = substring(@_empresa,1,3);
+    set @random = LPAD(FLOOR(1 + RAND() * (9999999 - 1 + 1)),7,'0');
+    set @codCupon = concat(@_codemp,@random);
+    
+    /*while @random not in (select random from cupon) do
+		begin*/
+			insert into cupon (random, codigoCupon, oferta, compra, canjeo)
+            values (@random, @codCupon, _oferta, _compra, _canjeo);
+        /*end;
+	end while;*/
+end//
+delimiter ;
+
+call desafiomvc.ingresarCupon(1, 1, 0);
 
 /* Procedimiento para loguearse */
 delimiter $$
