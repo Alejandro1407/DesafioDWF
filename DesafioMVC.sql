@@ -8,9 +8,6 @@ CREATE TABLE rubro(
     descripcion text
 );
 
-insert into rubro (rubro, descripcion) values ('Algo','Descripcion');
-select * from rubro;
-
 create table empresa(
 	id int auto_increment primary key,
     codigoEmpresa varchar(6),
@@ -34,8 +31,6 @@ begin
 	(_nombre, concat('EMP',LPAD(@_id,3,'0')), _direccion, _contacto, _telefono, _rubro, _cobro);
 end //
 delimiter ;
-
-call desafiomvc.insertarEmpresa('Davivienda', 'el centro we', 'Lic Davivienda', '2265-9601', 1, 10);
 
 create table estado(
     idEstado int primary key auto_increment,
@@ -75,8 +70,6 @@ begin
 end//
 delimiter ;
 
-call desafiomvc.ingresarOferta('Dinero Gratis', 100, 99.99, '2019-08-29', '2019-08-30', '2019-08-30', 5, 'Aproveche we', 'No', 1);
-
 CREATE table justificacionRechazos(
     oferta int PRIMARY key, 
     justificacion varchar(200),
@@ -99,6 +92,7 @@ end//
 delimiter ;
 
 delimiter //
+
 create procedure reintentarOferta (IN _idOferta int, _titulo varchar(100), _precioRegular double, _precioOferta double, _fechaInicio datetime, _fechaFin datetime, 
 _fechaLimite datetime, _limiteCupones int, _descripcion varchar(200), _otrosDetalles varchar(200), _empresa int)
 begin
@@ -125,9 +119,6 @@ create table usuario(
     FOREIGN key (tipo) REFERENCES tipoUsuario(idTipo),
     foreign key (empresa) references empresa(id)
 );
-insert into usuario(nombres, apellidos, correo, contrasenia, tipo)
-values ('Javier', 'Ibarra','eldios@hotmail.com','contrasenia',3);
-
 
 create table cliente(
     usuario int primary key,
@@ -135,8 +126,6 @@ create table cliente(
     telefono varchar(10) not null,
     FOREIGN key (usuario) REFERENCES usuario(idUsuario)
 );
-insert cliente values (1,'12345678-9','6598-8963');
-
 
 create table compra(
     idCompra int AUTO_INCREMENT PRIMARY key,
@@ -145,7 +134,7 @@ create table compra(
     cliente int not null,
     FOREIGN key (cliente) REFERENCES cliente(usuario)
 );
-insert into compra(fecha, total, cliente) values (current_timestamp(), 99.99, 1);
+
 
 
 create table cupon(
@@ -175,13 +164,11 @@ begin
 end//
 delimiter ;
 
-call desafiomvc.ingresarCupon(1, 1, 0);
-
 /* Procedimiento para loguearse */
 delimiter $$
 CREATE PROCEDURE loguearse (Usuario VARCHAR(50),Contrasenia VARCHAR(50))
     BEGIN
-        SELECT u.idUsuario,u.nombres,t.idTipo
+        SELECT u.idUsuario,u.nombres,t.idTipo,u.empresa
         FROM usuario u
         INNER JOIN tipoUsuario t
         ON u.tipo = t.idTipo

@@ -19,6 +19,7 @@ public class SesionModel extends Conexion {
             u.setId(resultSet.getInt(1));
             u.setNombres(resultSet.getString(2));
             u.setIdTipo(resultSet.getInt(3));
+            u.setIdEmpresa(resultSet.getInt(4) );
             this.Desconectar();
             return u;
 		}catch (Exception e) {

@@ -7,6 +7,15 @@ public class Usuario {
 	private String Apellidos;
 	private String Correo;
 	private String Constraseña;
+	private Integer IdEmpresa;
+	
+	public Integer getIdEmpresa() {
+		return IdEmpresa;
+	}
+	public void setIdEmpresa(Integer idEmpresa) {
+		IdEmpresa = idEmpresa;
+	}
+	
 	private int IdTipo;
 	
 	public int getId() {

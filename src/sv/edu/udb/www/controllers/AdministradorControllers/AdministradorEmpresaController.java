@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import sv.edu.udb.www.beans.Opcion;
 
-@WebServlet(name = "/EmpresaController", urlPatterns = "/Administrador/Empresa")
+@WebServlet(name = "/AdministradorEmpresaController", urlPatterns = "/Administrador/Empresa")
 public class AdministradorEmpresaController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -35,9 +35,9 @@ public class AdministradorEmpresaController extends HttpServlet {
 	protected void ProccessRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		List<Opcion> Opciones = new ArrayList<Opcion>();
 		Opciones.add(new Opcion("DashBoard","/DesafioMVC/Administrador","fas fa-chart-pie",false));
-		Opciones.add(new Opcion("Gestión Empresa","/DesafioMVC/Administrador/Empresa","fas fa-building",true));
-		Opciones.add(new Opcion("Gestión Rubros","/DesafioMVC/Administrador/Rubros","fas fa-briefcase",false));
-		Opciones.add(new Opcion("Gestión Clientes","/DesafioMVC/Administrador/Clientes","fas fa-users",false));
+		Opciones.add(new Opcion("Empresas","/DesafioMVC/Administrador/Empresa","fas fa-building",true));
+		Opciones.add(new Opcion("Rubros","/DesafioMVC/Administrador/Rubros","fas fa-briefcase",false));
+		Opciones.add(new Opcion("Clientes","/DesafioMVC/Administrador/Clientes","fas fa-users",false));
 		response.setContentType("text/html;charset=UTF-8");
 		try{
 				String Operacion =  "";

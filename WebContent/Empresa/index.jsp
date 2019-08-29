@@ -41,10 +41,11 @@
         	<img src="https://mdbootstrap.com/img/logo/mdb-email.png" class="img-fluid" alt="">
       	</a>
 	     <div class="list-group list-group-flush">
-				<%  List<Opcion> opciones = (List<Opcion>) request.getAttribute("Opciones");
-					for(Opcion opcion: opciones){
+			
+				<%  List<Opcion> opciones = (List<Opcion>)request.getAttribute("Opciones");
+					for(Opcion opcion : opciones){
 				%>
-				 		<a href="<%=opcion.getURL() %>" class="list-group-item <% if(opcion.isIsActive()){ out.print("active");}else{ out.print("list-group-action");}%>  waves-effect">
+				 		<a href="<%=opcion.getURL() %>" class="list-group-item <% if(opcion.isIsActive()){ out.print("active");}else{ out.print("list-group-item-action");}%>  waves-effect">
 			            	<i class="<%=opcion.getIcon()%> mr-3"></i><%=opcion.getNombre()%>
 			        	</a>
 				<%
@@ -55,7 +56,7 @@
 	          	<i class="fas fa-lock mr-3"></i>Cambiar Contraseña
 	         </a>
 	         <a href="../Servicios/cerrarsesion.jsp" class="list-group-item red-text list-group-item-action waves-effect">
-	          	<i class="fas fa-sign-out-alt mr-3"></i>Cerrra Sesion
+	          	<i class="fas fa-sign-out-alt mr-3"></i>Cerrar Sesion
 	          </a>
 	     </div>
           
@@ -66,7 +67,7 @@
   <main class="pt-5 mx-lg-5">
     <div class="container-fluid">
       <!--Grid row-->
-      <h1 class="text-center">Bienvenido <c:out value="${cookie.NombreUser.value}"/></h1>
+      <h1 class="text-center">Bienvenido <c:out value="${cookie.NombreUser.value }"/> </h1>
         <br>
         
       <div class="row wow fadeIn">

@@ -60,14 +60,17 @@ public class SesionController extends HttpServlet {
 		Cookie idEmpleado = new Cookie("idEmpleado",String.valueOf(u.getId()));
 		Cookie NombreUser = new Cookie("NombreUser", u.getNombres());
 		Cookie idTipo = new Cookie("idTipo",String.valueOf(u.getIdTipo()));
+		Cookie idEmpresa =  new Cookie("idEmpresa",String.valueOf(u.getIdEmpresa()));
 		
 		idEmpleado.setPath("/");
 		NombreUser.setPath("/");
 		idTipo.setPath("/");
+		idEmpresa.setPath("/");
 		
 		response.addCookie(idEmpleado);
 		response.addCookie(NombreUser);
 		response.addCookie(idTipo);
+		response.addCookie(idEmpresa);
 		
 		String URL = "";
 		

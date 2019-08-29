@@ -1,41 +1,54 @@
 package sv.edu.udb.www.controllers.EmpresaControllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class EmpresaDependienteController
- */
-@WebServlet("/EmpresaDependienteController")
+import sv.edu.udb.www.beans.Opcion;
+
+@WebServlet(name = "/EmpresaDependienteController", urlPatterns = {"/Empresa/Dependientes"})
 public class EmpresaDependienteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public EmpresaDependienteController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		ProccessRequest(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		ProccessRequest(request, response);
 	}
-
+	protected void ProccessRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		List<Opcion> Opciones = new ArrayList<Opcion>();
+		Opciones.add(new Opcion("DashBoard","/DesafioMVC/Empresa","fas fa-chart-pie",false));
+		Opciones.add(new Opcion("Ofertas","/DesafioMVC/Empresa/Ofertas","fas fa-percent",false));
+		Opciones.add(new Opcion("Dependientes","/DesafioMVC/Empresa/Dependientes","fas fa-users-cog",true));
+		response.setContentType("text/html;charset=UTF-8");
+		try{
+				String Operacion =  "";
+				if(request.getParameter("op") != null){
+					Operacion = request.getParameter("op");
+				}
+				switch (Operacion) {
+				//Implementar aqui sus casos
+				
+				default:
+					request.setAttribute("Opciones", Opciones);
+					request.getRequestDispatcher("/Empresa/Dependientes/index.jsp").forward(request, response);
+					break;
+				}
+			}catch (Exception e) {
+				request.setAttribute("Error", e.getMessage());
+				request.getRequestDispatcher("/Error.jsp").forward(request,response);
+			}
+	} //ProccessRequest
 }

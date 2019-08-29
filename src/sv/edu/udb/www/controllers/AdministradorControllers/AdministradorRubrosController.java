@@ -31,9 +31,9 @@ public class AdministradorRubrosController extends HttpServlet {
 	protected void ProccessRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		List<Opcion> Opciones = new ArrayList<Opcion>();
 		Opciones.add(new Opcion("DashBoard","/DesafioMVC/Administrador","fas fa-chart-pie",false));
-		Opciones.add(new Opcion("Gestión Empresa","/DesafioMVC/Administrador/Empresa","fas fa-building",false));
-		Opciones.add(new Opcion("Gestión Rubros","/DesafioMVC/Administrador/Rubros","fas fa-briefcase",true));
-		Opciones.add(new Opcion("Gestión Clientes","/DesafioMVC/Administrador/Clientes","fas fa-users",false));
+		Opciones.add(new Opcion("Empresa","/DesafioMVC/Administrador/Empresa","fas fa-building",false));
+		Opciones.add(new Opcion("Rubros","/DesafioMVC/Administrador/Rubros","fas fa-briefcase",true));
+		Opciones.add(new Opcion("Clientes","/DesafioMVC/Administrador/Clientes","fas fa-users",false));
 		response.setContentType("text/html;charset=UTF-8");
 		try{
 				String Operacion =  "";

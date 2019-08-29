@@ -44,7 +44,7 @@
 				<%  List<Opcion> opciones = (List<Opcion>) request.getAttribute("Opciones");
 					for(Opcion opcion: opciones){
 				%>
-				 		<a href="<%=opcion.getURL() %>" class="list-group-item <% if(opcion.isIsActive()){ out.print("active");}else{ out.print("list-group-action");}%>  waves-effect">
+				 		<a href="<%=opcion.getURL() %>" class="list-group-item <% if(opcion.isIsActive()){ out.print("active");}else{ out.print("list-group-item-action");}%>  waves-effect">
 			            	<i class="<%=opcion.getIcon()%> mr-3"></i><%=opcion.getNombre()%>
 			        	</a>
 				<%
