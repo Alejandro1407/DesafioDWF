@@ -132,7 +132,7 @@ create table compra(
     fecha datetime not null,
     total double not null,
     cliente int not null,
-    FOREIGN key (cliente) RFERENCES cliente(usuario)
+    FOREIGN key (cliente) REFERENCES cliente(usuario)
 );
 
 
