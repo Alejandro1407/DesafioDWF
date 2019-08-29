@@ -47,16 +47,22 @@
   <!--Main layout-->
   <main class="pt-5 mx-lg-5 bg-white">
     <div class="container-fluid w-50 mt-5">
-     <form action="cambiardb.jsp" method="post">
+    
+    
+     <form action="<c:out value="${requestScope.Path}"/>" method="post">
             <table border="0" cellspacing="2" cellpadding="5">
                        <h2>Cambiar contraseña</h2>
                   <div class="md-form">
+	                   <label for="email">Ingrese la antigua contraseña:</label>
+	                   <input type="password" class="form-control" id="email" name="OldPass">
+                 </div>
+                  <div class="md-form">
 	                   <label for="email">Ingrese la nueva contraseña:</label>
-	                   <input type="password" class="form-control" id="email" name="p1">
+	                   <input type="password" class="form-control" id="email" name="NewPass1">
                  </div>
                  <div class="md-form">
                    <label for="pwd">Vuelva a escribir la contraseña:</label>
-                   <input type="password" class="form-control" id="pwd" name="p2">
+                   <input type="password" class="form-control" id="pwd" name="NewPass2">
                  </div>
                     <tr>
                         <td><input type="submit" class="btn btn-success" value="Cambiar"/></td>
@@ -70,14 +76,13 @@
                 </tbody>
             </table>
         </form>
-                      <font color="red"><c:if test="${not empty param.errMsg}">
-            <c:out value="${param.errMsg}" />
-          
-        </c:if></font>
-        <font color="green"><c:if test="${not empty param.susMsg}">
-            <c:out value="${param.susMsg}" />
-    
-        </c:if></font>
+        
+        	<c:if test="${not empty requestScope.message}">
+	        	<div class="alert alert-warning">
+	            	<c:out value="${requestScope.message}" />
+	             </div>
+        	</c:if>
+       
     </div>
   </main>
 <footer>

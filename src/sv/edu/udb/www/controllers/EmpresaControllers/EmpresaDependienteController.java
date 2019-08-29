@@ -32,6 +32,8 @@ public class EmpresaDependienteController extends HttpServlet {
 		Opciones.add(new Opcion("DashBoard","/DesafioMVC/Empresa","fas fa-chart-pie",false));
 		Opciones.add(new Opcion("Ofertas","/DesafioMVC/Empresa/Ofertas","fas fa-percent",false));
 		Opciones.add(new Opcion("Dependientes","/DesafioMVC/Empresa/Dependientes","fas fa-users-cog",true));
+		Opciones.add(new Opcion("Cambiar Contraseña","/DesafioMVC/Empresa?op=Change","fas fa-lock",false));
+		Opciones.add(new Opcion("Cerrar Sesion","/DesafioMVC/Login?op=cerrar","fas fa-sign-out-alt red-text",false));
 		response.setContentType("text/html;charset=UTF-8");
 		try{
 				String Operacion =  "";
