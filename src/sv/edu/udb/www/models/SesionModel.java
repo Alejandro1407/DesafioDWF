@@ -2,6 +2,7 @@ package sv.edu.udb.www.models;
 
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -52,5 +53,46 @@ public class SesionModel extends Conexion {
 		}//UPDATE usuario SET contrasenia = SHA2("Password01",256)
 	}
 	
+	public boolean SolicitarRecuperacion(UUID Token,String Email){
+		try{
+			this.Conectar();
+			query =  conexion.prepareStatement("INSERT INTO Token (Token,Email) VALUES (?,?)");
+			query.setString(1, Token.toString());
+			query.setString(2,Email);
+			query.executeUpdate();
+			this.Desconectar();
+			return true;
+		}catch (Exception e) {
+			return false;
+		}
+	}// Solicitar
+	
+	public String ValidarToken(String Token){
+		try{
+			this.Conectar();
+			proc = conexion.prepareCall("{ call ValidarToken (?)}");
+			proc.setString(1, Token);
+			resultSet = proc.executeQuery();
+			if(!resultSet.next()){
+				return null;
+			}
+			return resultSet.getString(1);	
+		}catch (Exception e) {
+			return null;
+		}
+	}
+	public boolean RecuperarContraseña(String NewPass,String Email){
+		try{
+			this.Conectar();
+			query = conexion.prepareStatement("UPDATE usuario SET contrasenia = SHA2(?,256) WHERE correo =  ?");
+			query.setString(1, NewPass);
+			query.setString(2, Email);
+			query.executeUpdate();
+			this.Desconectar();
+			return true;
+		}catch (Exception e) {
+			return false;
+		}
+	}
 	
 }//Clase

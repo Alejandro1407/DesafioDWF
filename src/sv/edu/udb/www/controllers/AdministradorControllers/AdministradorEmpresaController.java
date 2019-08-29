@@ -47,7 +47,9 @@ public class AdministradorEmpresaController extends HttpServlet {
 					Operacion = request.getParameter("op");
 				}
 				switch (Operacion) {
-				//Implementar sus acciones
+				case "Insertar":
+					
+					break;
 				default:
 					request.setAttribute("Opciones", Opciones);
 					request.getRequestDispatcher("/Administrador/Empresa/index.jsp").forward(request, response);
@@ -58,4 +60,13 @@ public class AdministradorEmpresaController extends HttpServlet {
 				request.getRequestDispatcher("/Error.jsp").forward(request,response);
 			}
 	} //ProccessRequest
+	
+	private void Insertar(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		
+		
+		
+	}
+	
+	
+	
 }//EmpresaController

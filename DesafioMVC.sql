@@ -189,6 +189,28 @@ delimiter //
 end //
 delimiter ;
 
+delimiter //
+    create procedure ValidarToken(TOKEN VARCHAR(50))
+    begin
+        SET @valid = (select count(*) from Token where Token = TOKEN AND Valid = 1);
+        if @valid > 0 then
+            UPDATE Token SET Valid = 0 WHERE Token = TOKEN;
+            SELECT Email FROM Token WHERE Token = TOKEN;
+        else
+            SELECT CONCAT("false");
+        end if;
+end //
+delimiter ;
+
+/* Tabla para los Tokens de correo */
+CREATE TABLE Token(
+	id INT NOT NULL auto_increment,
+	Token VARCHAR(50) NOT NULL UNIQUE,
+	Email VARCHAR(60) NOT NULL,
+    Valid BIT DEFAULT 1,
+	PRIMARY KEY(id)
+);
+
 
 
 /* Tipos de Usuarios */ 
