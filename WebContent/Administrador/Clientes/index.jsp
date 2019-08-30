@@ -2,31 +2,15 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="sv.edu.udb.www.beans.Opcion"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%!
-    public String getCookie(String cookieName, Cookie[] cookies){
-        for(int i = 0;i < cookies.length;i++){
-            Cookie cookie = cookies[i];
-                if(cookie.getName().equals(cookieName)){
-                    return cookie.getValue();
-                }
-        }
-        return "Null";
-    }
-%>
 <%
      //Para evitar el acceso no authorizado
-      HttpSession sesion = request.getSession();
-
+     
+     HttpSession sesion = request.getSession();
+     
      if(sesion.getAttribute("Administrador") == null){
          response.sendRedirect("/DesafioMVC/Login.jsp?Error=Debe iniciar sesion");
          return;
      }
-     //Codigo para obtener las cookies
-         Cookie[] cookies = null;
-         cookies = request.getCookies();
-         String idEmpleado = getCookie("idEmpleado", cookies);
-         String NombreUser = getCookie("NombreUser", cookies);
-         int idDepartamento = Integer.parseInt(getCookie("idTipo", cookies));
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -51,7 +35,7 @@
             }
             </style>
     </head>
-  <body class="grey lighten-3">
+  <body class="lighten-3">
   
   	<div class="sidebar-fixed position-fixed">
   	  	<a class="logo-wrapper waves-effect">
@@ -76,15 +60,53 @@
   <main class="pt-5 mx-lg-5">
     <div class="container-fluid">
       <!--Grid row-->
-      <h1 class="text-center">Gestión Clientes</h1>
+      <h1 class="text-center">Gestión Ofertas</h1>
         <br>
-        Los putos clientes >:v 
-      <div class="row wow fadeIn">
-
+        <c:if test="${not empty requestScope.SuccessMsg}">
+        	<p class="alert alert-success">${requestScope.SuccessMsg}</p>
+        </c:if>
+        <c:if test="${not empty requestScope.ErrorMsg}">
+        	<p class="alert alert-danger">${requestScope.ErrorMsg}</p>
+        </c:if>
+        
+       <div class="row wow fadeIn">
+		<table class="table" id="TheTable">
+			<thead>	
+				<tr>
+					<th>#</th>
+					<th>Nombres</th>
+					<th>Apellidos</th>
+					<th>Correo</th>
+					<th>DUI</th>
+					<th>Telefono</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${requestScope.ClientesList}" var="Cliente">
+					<tr>
+						<td>${Cliente.id}</td>
+						<td>${Cliente.nombres}</td>
+						<td>${Cliente.apellidos}</td>
+						<td>${Cliente.correo}</td>
+						<td>${Cliente.dui}</td>
+						<td>${Cliente.telefono}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<c:if test="${empty requestScope.OfertasList}">
+					<p class="alert alert-danger ml-auto mr-auto d-block w-50 text-center">No hay ofertas pendientes</p>
+		</c:if>
       </div>
   </main>
 <footer>
-	<%@ include file='/Utils/ImportJS.jsp' %>
+<%@ include file='/Utils/ImportJS.jsp' %>
+<script>
+	$(document).ready(function () {
+    	$('TheTable').DataTable();
+	});
+</script>
+	
 </footer>
     </body>
 </html>

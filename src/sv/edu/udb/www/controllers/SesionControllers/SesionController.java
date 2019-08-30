@@ -157,26 +157,23 @@ public class SesionController extends HttpServlet {
 		u.setConstraseña(request.getParameter("Contrasenia"));
 		boolean result = model.RegistrarUsuario(u);
 		if(result){
-			SendMail(request, response,u.getCorreo());
+			UUID Token = UUID.randomUUID();
+			String Message = "Hola\nBienvenido a la Cuponera SV\n"
+							+ "\nPara validar su correo entre al siguiente link"
+							+ "\nhttp://localhost:8080/DesafioMVC/Login?op=Validar&Token=" + Token
+							+ "\n\nSi no hiciste dicha solicitud ignora este mensaje"
+							+ "\n\nDepartamento de Administración - La Cuponera SV";
+			
+			boolean send = model.AlmacenarToken(Token, u.getCorreo());
+			if(!send){
+				request.setAttribute("Error","Ha ocurrio un error");
+				request.getRequestDispatcher("/Login.jsp").forward(request, response);
+				return;
+			}
+			Mailer mailer = new Mailer();
+			mailer.send(u.getCorreo(), "Comprobar correo", Message);
 		}
-		
-	}
-	
-	private void SendMail(HttpServletRequest request, HttpServletResponse response,String Email) throws ServletException, IOException{
-		UUID Token = UUID.randomUUID();
-		String Message = "Hola\nBienvenido a la Cuponera SV\n"
-						+ "\nPara validar su correo entre al siguiente link"
-						+ "\nhttp://localhost:8080/DesafioMVC/Login?op=Validar&Token=" + Token
-						+ "\n\nSi no hiciste dicha solicitud ignora este mensaje"
-						+ "\n\nDepartamento de Administración - La Cuponera SV";
-		
-		boolean send = model.AlmacenarToken(Token, Email);
-		if(!send){
-			request.setAttribute("Error","Ha ocurrio un error");
-			request.getRequestDispatcher("/Login.jsp").forward(request, response);
-		}
-		Mailer mailer = new Mailer();
-		mailer.send(Email, "Comprobar correo", Message);
+		request.setAttribute("Error","Registro Exitoso");
 		request.getRequestDispatcher("/Login.jsp").forward(request, response);
 	}
 	private void ValidarToken(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

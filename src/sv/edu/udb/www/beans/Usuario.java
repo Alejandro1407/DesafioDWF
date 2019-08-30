@@ -12,6 +12,20 @@ public class Usuario {
 	private String Telefono;
 	private String DUI;
 	
+	public Usuario(){
+		
+	}
+	
+	public Usuario(int id, String nombres, String apellidos, String correo,String dUI,String telefono) {
+		super();
+		Id = id;
+		Nombres = nombres;
+		Apellidos = apellidos;
+		Correo = correo;
+		Telefono = telefono;
+		DUI = dUI;
+	}
+	
 	public String getTelefono() {
 		return Telefono;
 	}

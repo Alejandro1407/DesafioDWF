@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sv.edu.udb.www.beans.Opcion;
+import sv.edu.udb.www.models.AdministradorModels.ClienteModel;
 
 @WebServlet(name = "/AdministradorClientesController", urlPatterns = "/Administrador/Clientes")
 public class AdministradorClientesController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	ClienteModel model =  new ClienteModel();
+	
     public AdministradorClientesController() {
         super();
     }
@@ -47,6 +50,7 @@ public class AdministradorClientesController extends HttpServlet {
 				//Implementar sus caso Agregar,Eliminar,Editar,etc
 				
 				default:
+					request.setAttribute("UsuariosList", model.ObtenerClientes());
 					request.setAttribute("Opciones", Opciones);
 					request.getRequestDispatcher("/Administrador/Clientes/index.jsp").forward(request, response);
 					break;

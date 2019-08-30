@@ -38,7 +38,7 @@ begin
 	AND  TABLE_NAME = 'empresa');
 	insert into empresa (nombre, codigoEmpresa, direccion, telefono, rubro, cobro) values
 	(_nombre, concat('EMP',LPAD(@_id,3,'0')), _direccion,_telefono, _rubro, _cobro);
-    insert into usuario (nombres,correo,contrasenia,empresa,tipo) values (_contacto,_correo,SHA2(_contrasenia,256),LAST_INSERT_ID(),2);
+    insert into usuario (nombres,correo,contrasenia,empresa,tipo,valid) values (_contacto,_correo,SHA2(_contrasenia,256),LAST_INSERT_ID(),2,1);
 end //
 delimiter ;
 

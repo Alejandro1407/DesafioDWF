@@ -130,7 +130,7 @@ public class SesionModel extends Conexion {
 	public boolean RegistrarUsuario(Usuario u){
 		try{
 			this.Conectar();
-			query = conexion.prepareStatement("INSERT INTO usuario VALUES (NULL,?,?,?,SHA2(?,256),NULL,3);INSERT INTO cliente VALUES (LAST_INSERT_ID(),?,?)");
+			query = conexion.prepareStatement("INSERT INTO usuario (nombres,apellidos,correo,contrasenia,tipo,valid) VALUES (?,?,?,SHA2(?,256),3,0);INSERT INTO cliente VALUES (LAST_INSERT_ID(),?,?)");
 			query.setString(1, u.getNombres());
 			query.setString(2, u.getApellidos());
 			query.setString(3, u.getCorreo());
