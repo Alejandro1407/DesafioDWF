@@ -78,7 +78,7 @@
 					<th>Codigo</th>
 					<th>Nombre</th>
 					<th>Dirección</th>
-					<th>Contacto</th>
+					<th>Correo</th>
 					<th>Telefono</th>
 					<th>Rubro</th>
 					<th>Cobro</th>
@@ -91,9 +91,9 @@
 						<td>${Empresa.codigo}</td>
 						<td>${Empresa.nombre}</td>
 						<td>${Empresa.direccion}</td>
-						<td>${Empresa.contacto}</td>
+						<td>${Empresa.correo}</td>
 						<td>${Empresa.telefono}</td>
-						<td>${Empresa.idRubro}</td>
+						<td>${Empresa.nombreRubro}</td>
 						<td>${Empresa.cobro}</td>
 						<td class="p-0"><a href="/DesafioMVC/Administrador/Empresa?op=Editar&id=${Empresa.id}" class="btn btn-outline-warning">Editar</a></td>
 						<td class="p-0"><a id="${Empresa.id}" onclick="Eliminar(this)" class="btn btn-outline-danger">Eliminar</a></td>

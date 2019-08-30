@@ -80,6 +80,11 @@
 			                   <label for="email">Contacto:</label>
 			                   <input type="text" class="form-control" name="Contacto" required>
 		                 </div>
+		                   <div class="md-form">
+			                   <label for="email">Correo:</label>
+			                   <input type="text" class="form-control" name="Correo" required>
+		                 </div>
+		                 
 		                    <div class="md-form">
 			                   <label for="email">Telefono:</label>
 			                   <input type="text" class="form-control" name="Telefono" required>
@@ -94,7 +99,7 @@
 		                 
 		                  <div class="md-form">
 			                   <label for="email">Cobro:</label>
-			                   <input type="number" class="form-control" min="0" max="10000" step="0.1" name="Cobro" required>
+			                   <input type="number" class="form-control" min="0" max="100" step="0.1" name="Cobro" required>
 		                 </div>
 		                 <c:if test="${not empty requestScope.RubrosList}">
 							<button type="submit" class="btn btn-outline-success">Añadir</button>

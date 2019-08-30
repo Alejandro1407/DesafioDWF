@@ -13,22 +13,32 @@ create table empresa(
     codigoEmpresa varchar(6) UNIQUE,
     nombre varchar(100) not null,
     direccion varchar(200) not null,
-    contacto varchar(100) not null,
     telefono varchar(10) not null,
     rubro int not null,
     cobro double not null default 0.0,
     foreign key(rubro) references rubro(idRubro)
 );
 
+  idUsuario int AUTO_INCREMENT primary key,
+    nombres varchar(100) not null,
+    apellidos varchar(100) null,
+    correo varchar(200) not null unique,
+    contrasenia varchar(100) not null,
+    empresa int,
+    tipo int not null,
+    FOREIGN key (tipo) REFERENCES tipoUsuario(idTipo),
+    foreign key (empresa) references empresa(id)
+
 delimiter //
-create procedure insertarEmpresa(IN _nombre varchar(100), _direccion varchar(200), _contacto varchar(100), _telefono varchar(10), _rubro int(11), _cobro double)
+create procedure insertarEmpresa(IN _nombre varchar(100), _direccion varchar(200), _contacto varchar(100), _telefono varchar(10), _rubro int(11), _cobro double, _correo varchar(50),_contrasenia varchar(50))
 begin
 	set @_id = (SELECT `AUTO_INCREMENT`
 	FROM  INFORMATION_SCHEMA.TABLES
 	WHERE TABLE_SCHEMA = 'desafiomvc'
-	AND   TABLE_NAME   = 'empresa');
-	insert into empresa (nombre, codigoEmpresa, direccion, contacto, telefono, rubro, cobro) values
-	(_nombre, concat('EMP',LPAD(@_id,3,'0')), _direccion, _contacto, _telefono, _rubro, _cobro);
+	AND  TABLE_NAME = 'empresa');
+	insert into empresa (nombre, codigoEmpresa, direccion, telefono, rubro, cobro) values
+	(_nombre, concat('EMP',LPAD(@_id,3,'0')), _direccion,_telefono, _rubro, _cobro);
+    insert into usuario (nombres,correo,contrasenia,empresa,tipo) values (_contacto,_correo,SHA2(_contrasenia,256),LAST_INSERT_ID(),2);
 end //
 delimiter ;
 
@@ -136,32 +146,13 @@ create table compra(
 );
 
 create table cupon(
-	id int primary key auto_increment,
-    random int,
-    codigoCupon varchar(10),
+    codigoCupon varchar(13  ) primary KEY,
     oferta int not null,
     compra int not null,
 	canjeo bit not null DEFAULT 0,
     foreign key(oferta) references oferta(idOferta),
     FOREIGN key (compra) REFERENCES compra(idCompra)
 );
-
-delimiter //
-create procedure ingresarCupon(IN _oferta int, _compra int, _canjeo int)
-begin
-	set @_empresa = (select nombre from empresa join oferta on oferta.empresa = empresa.id where oferta.idOferta = _oferta limit 1);
-    set @_codemp = substring(@_empresa,1,3);
-    set @random = LPAD(FLOOR(1 + RAND() * (9999999 - 1 + 1)),7,'0');
-    set @codCupon = concat(@_codemp,@random);
-    
-    while @random not in (select random from cupon) do
-		begin
-			insert into cupon (random, codigoCupon, oferta, compra, canjeo)
-            values (@random, @codCupon, _oferta, _compra, _canjeo);
-        end;
-	end while;
-end//
-delimiter ;
 
 /* Procedimiento para loguearse */
 delimiter $$
@@ -214,7 +205,7 @@ CREATE TABLE Token(
 
 /* Tipos de Usuarios */ 
 INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Administrador', 'Administrador de La Cuponera');
-INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Empresa', 'Cliente de Empreas');
+INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Empresa', 'Administrador empresa cliente');
 INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Cliente', 'Consumidor Final');
 
 /* Usuarios por defecto */

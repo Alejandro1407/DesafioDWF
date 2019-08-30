@@ -77,14 +77,9 @@
 			                   <input type="text" class="form-control" name="Direccion"   value="${requestScope.Empresa.direccion}"required>
 		                 </div>
 		                    <div class="md-form">
-			                   <label for="email">Contacto:</label>
-			                   <input type="text" class="form-control" name="Contacto"  value="${requestScope.Empresa.contacto}" required>
-		                 </div>
-		                    <div class="md-form">
 			                   <label for="email">Telefono:</label>
 			                   <input type="text" class="form-control" name="Telefono"  value="${requestScope.Empresa.telefono}" required>
 		                 </div>
-		                  
 			                   <label for="email">Rubro:</label>
 			                   <select name="idRubro" class="custom-select" value="${requestScope.Empresa.idRubro}">
 			                   	<c:forEach items="${requestScope.RubrosList}" var="Rubro">

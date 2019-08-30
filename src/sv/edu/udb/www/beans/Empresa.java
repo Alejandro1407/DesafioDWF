@@ -10,17 +10,32 @@ public class Empresa {
 	private String Telefono;
 	private int IdRubro;
 	private double Cobro;
+	private String NombreRubro;
+	private String correo;
 	
-	public Empresa(int id, String codigo, String nombre, String direccion, String contacto, String telefono,
-			int idRubro, double cobro) {
+	public Empresa(int id, String codigo, String nombre, String direccion,String telefono,
+			int idRubro, double cobro,String NombreRubro,String correo) {
 		this.id = id;
 		this.Codigo = codigo;
 		this.Nombre = nombre;
 		this.Direccion = direccion;
-		this.Contacto = contacto;
 		this.Telefono = telefono;
 		this.IdRubro = idRubro;
 		this.Cobro = cobro;
+		this.NombreRubro = NombreRubro;
+		this.correo = correo;
+	}
+	public String getNombreRubro() {
+		return NombreRubro;
+	}
+	public void setNombreRubro(String nombreRubro) {
+		NombreRubro = nombreRubro;
+	}
+	public String getCorreo() {
+		return correo;
+	}
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
 	public Empresa(){
 		

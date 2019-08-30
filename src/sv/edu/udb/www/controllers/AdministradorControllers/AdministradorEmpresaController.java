@@ -86,6 +86,7 @@ public class AdministradorEmpresaController extends HttpServlet {
 		e.setTelefono(request.getParameter("Telefono"));
 		e.setIdRubro(Integer.parseInt(request.getParameter("idRubro")));
 		e.setCobro(Double.parseDouble(request.getParameter("Cobro")));
+		e.setCorreo(request.getParameter("Correo"));
 		boolean result = model.InsertarEmpresa(e);
 		if(result){
 			request.setAttribute("SuccessMsg", "Insertado correctamente");

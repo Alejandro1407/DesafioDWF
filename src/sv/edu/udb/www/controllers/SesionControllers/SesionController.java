@@ -1,6 +1,8 @@
 package sv.edu.udb.www.controllers.SesionControllers;
 
 import java.io.IOException;
+import java.security.SecureRandom;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.*;
@@ -11,14 +13,16 @@ import com.mysql.fabric.Response;
 import sv.edu.udb.www.models.SesionModel;
 import sv.edu.udb.www.beans.*;
 import sv.edu.udb.www.models.Mailer;
+
+import java.util.Random;
 import java.util.UUID;
 
 @WebServlet(name = "/SesionController", urlPatterns = {"/Login"})
 public class SesionController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	SesionModel model =  new SesionModel();
 	
+	SesionModel model =  new SesionModel();
+	    
     public SesionController() {
         super();
     }
