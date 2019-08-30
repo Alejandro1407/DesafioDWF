@@ -60,7 +60,7 @@
   <main class="pt-5 mx-lg-5">
     <div class="container-fluid">
       <!--Grid row-->
-      <h1 class="text-center">Gestión Empresas</h1>
+      <h1 class="text-center">Gestión Ofertas</h1>
         <br>
         <c:if test="${not empty requestScope.SuccessMsg}">
         	<p class="alert alert-success">${requestScope.SuccessMsg}</p>
@@ -70,39 +70,41 @@
         </c:if>
         
        <div class="row wow fadeIn">
-			<a href="/DesafioMVC/Administrador/Empresa?op=Agregar" class="btn btn-outline-success">Agregar</a>
-			<br><br><br>
 		<table class="table" id="TheTable">
 			<thead>	
 				<tr>
-					<th>Codigo</th>
-					<th>Nombre</th>
-					<th>Dirección</th>
-					<th>Correo</th>
-					<th>Telefono</th>
-					<th>Rubro</th>
-					<th>Cobro</th>
+					<th>Titulo</th>
+					<th>Precio Regular</th>
+					<th>Precio Oferta</th>
+					<th>Fecha Inicio</th>
+					<th>Fecha Final</th>
+					<th>Existencias</th>
+					<th>Descripcion</th>
+					<th>Dettales Adicionales</th>
+					<th>Empresa Ofertante</th>
 					<th colspan="2">Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${requestScope.EmpresasList}" var="Empresa">
+				<c:forEach items="${requestScope.OfertasList}" var="Oferta">
 					<tr>
-						<td>${Empresa.codigo}</td>
-						<td>${Empresa.nombre}</td>
-						<td>${Empresa.direccion}</td>
-						<td>${Empresa.correo}</td>
-						<td>${Empresa.telefono}</td>
-						<td>${Empresa.nombreRubro}</td>
-						<td>${Empresa.cobro}</td>
-						<td class="p-0"><a href="/DesafioMVC/Administrador/Empresa?op=Editar&id=${Empresa.id}" class="btn btn-outline-warning">Editar</a></td>
-						<td class="p-0"><a id="${Empresa.id}" onclick="Eliminar(this)" class="btn btn-outline-danger">Eliminar</a></td>
+						<td>${Oferta.titulo}</td>
+						<td>$ ${Oferta.PRegular}</td>
+						<td>$ ${Oferta.POferta}</td>
+						<td>${Oferta.FInicio}</td>
+						<td>${Oferta.FFinal}</td>
+						<td>${Oferta.limite}</td>
+						<td>${Oferta.descripcion}</td>
+						<td>${Oferta.detalles}</td>
+						<td>${Oferta.nombreEmpresa}</td>
+						<td class="p-0 pt-2"><a id="${Oferta.id}" onclick="Aceptar(this)" class="btn btn-outline-success">Aceptar</a></td>
+						<td class="p-0 pt-2"><a id="${Oferta.id}" onclick="Rechazar(this)" class="btn btn-outline-danger">Rechazar</a></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<c:if test="${empty requestScope.EmpresasList}">
-					<p class="alert alert-danger ml-auto mr-auto d-block w-50 text-center">No hay empresas que mostrar</p>
+		<c:if test="${empty requestScope.OfertasList}">
+					<p class="alert alert-danger ml-auto mr-auto d-block w-50 text-center">No hay ofertas pendientes</p>
 		</c:if>
       </div>
   </main>
@@ -112,10 +114,16 @@
 	$(document).ready(function () {
     	$('TheTable').DataTable();
 	});
-	function Eliminar(e) {
-		var r = confirm("¿Seguro que desea Eliminar?");
+	function Aceptar(e) {
+		var r = confirm("¿Seguro que desea aceptar esta oferta?");
 		if (r == true) {
-		  location.href = "/DesafioMVC/Administrador/Empresa?op=Eliminar&id=" + e.id;
+		  location.href = "/DesafioMVC/Administrador/Ofertas?op=Aceptar&id=" + e.id;
+		}
+	}
+	function Rechazar(e) {
+		var r = confirm("¿Seguro que desea rechazar esta oferta?");
+		if (r == true) {
+		  location.href = "/DesafioMVC/Administrador/Ofertas?op=Rechazar&id=" + e.id;
 		}
 	}
 </script>

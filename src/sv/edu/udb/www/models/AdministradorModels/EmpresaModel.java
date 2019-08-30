@@ -15,7 +15,7 @@ public class EmpresaModel extends Conexion{
 	 private static final Random RANDOM = new SecureRandom();
 	private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 		
-	 public static String generatePassword(int length) {
+	public static String generatePassword(int length) {
 	        StringBuilder returnValue = new StringBuilder(length);
 	        for (int i = 0; i < length; i++) {
 	            returnValue.append(ALPHABET.charAt(RANDOM.nextInt(ALPHABET.length())));
@@ -23,7 +23,7 @@ public class EmpresaModel extends Conexion{
 	        return new String(returnValue);
 	}
 	
-	 public Empresa ObtenerEmpresa(int id){
+	public Empresa ObtenerEmpresa(int id){
 		Empresa e = new Empresa();
 		try{
 			this.Conectar();
@@ -79,6 +79,7 @@ public class EmpresaModel extends Conexion{
 	}
 	
 	public boolean InsertarEmpresa(Empresa e){
+
 		try{
 			String Password = generatePassword(8);
 			this.Conectar();
@@ -106,6 +107,7 @@ public class EmpresaModel extends Conexion{
 		}
 		
 	}
+	
 	public boolean ActualizarEmpresa(Empresa e){
 		try{
 			this.Conectar();

@@ -50,14 +50,14 @@ public class SesionController extends HttpServlet {
 				case "cerrar":
 					CerrarSesion(request,response);
 					break;
-				case "SendMail":
-					SendMail(request, response);
+				case "Registro":
+					Registro(request, response);
 					break;
 				case "Recuperar":
 					Recuperar(request,response);
 					break;
-				case "RecuperarDB":
-					RecuperarDB(request,response);
+				case "Validar":
+					ValidarToken(request,response);
 					break;
 				default:
 					request.getRequestDispatcher("/Login.jsp").forward(request, response);
@@ -77,6 +77,7 @@ public class SesionController extends HttpServlet {
 		if(u == null){
 			request.setAttribute("Error", "Usuario y/o contraseña invalidos");
 			request.getRequestDispatcher("/Login.jsp").forward(request, response);
+			return;
 		}
 		
 		Cookie idEmpleado = new Cookie("idEmpleado",String.valueOf(u.getId()));
@@ -134,48 +135,59 @@ public class SesionController extends HttpServlet {
 		
 	}
 	
-	private void SendMail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		UUID Token = UUID.randomUUID();
-		String Message = "Hola\nParace que quieres recuperar tu contraseña ingresa al siguiente link para recuperla\n"
-						+ "http://localhost:8080/DesafioMVC/Login?op=Recuperar&Token=" + Token
-						+ "\n\n\nSi no hiciste dicha solicitud ignora este mensaje"
-						+ "\n\nDepartamento de Administración - La Cuponera SV";
+	private void Recuperar(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		String Email = request.getParameter("Email");
-		boolean send = model.SolicitarRecuperacion(Token, Email);
+		boolean result = model.RecuperarContraseña(Email);
+		if(result){
+			request.setAttribute("Error", "Solicitud de recuperacion realizada");
+		}else{
+			request.setAttribute("Error", "Ha ocurrido un error");
+		}
+		request.getRequestDispatcher("/Login.jsp").forward(request, response);
+		
+	}
+	
+	private void Registro(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+		Usuario u = new Usuario();
+		u.setNombres(request.getParameter("Nombres"));
+		u.setApellidos(request.getParameter("Apellidos"));
+		u.setTelefono(request.getParameter("Telefono"));
+		u.setCorreo(request.getParameter("Correo"));
+		u.setDUI(request.getParameter("DUI"));
+		u.setConstraseña(request.getParameter("Contrasenia"));
+		boolean result = model.RegistrarUsuario(u);
+		if(result){
+			SendMail(request, response,u.getCorreo());
+		}
+		
+	}
+	
+	private void SendMail(HttpServletRequest request, HttpServletResponse response,String Email) throws ServletException, IOException{
+		UUID Token = UUID.randomUUID();
+		String Message = "Hola\nBienvenido a la Cuponera SV\n"
+						+ "\nPara validar su correo entre al siguiente link"
+						+ "\nhttp://localhost:8080/DesafioMVC/Login?op=Validar&Token=" + Token
+						+ "\n\nSi no hiciste dicha solicitud ignora este mensaje"
+						+ "\n\nDepartamento de Administración - La Cuponera SV";
+		
+		boolean send = model.AlmacenarToken(Token, Email);
 		if(!send){
 			request.setAttribute("Error","Ha ocurrio un error");
 			request.getRequestDispatcher("/Login.jsp").forward(request, response);
 		}
 		Mailer mailer = new Mailer();
-		mailer.send(Email, "Solicitud de recuperacion", Message);
-		request.setAttribute("Error", "Solicitud de recuperacion realizada");
+		mailer.send(Email, "Comprobar correo", Message);
 		request.getRequestDispatcher("/Login.jsp").forward(request, response);
-		//response.sendRedirect("/DesafioMVC/Login");
-		return;
 	}
-	private void Recuperar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	private void ValidarToken(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		String Token =  request.getParameter("Token");
 		String Email = model.ValidarToken(Token);
 		if(Email.equals("false")){
-			request.setAttribute("Error","Token ingresado es invalido o ya fue utilizado");
-			request.getRequestDispatcher("/Recuperar.jsp").forward(request,response);
+			request.setAttribute("Error","Token ingresado es invalido");
+		}else{
+			request.setAttribute("Error","Cuenta verificada");
 		}
-		request.setAttribute("Email", Email);
-		request.getRequestDispatcher("/Recuperar.jsp").forward(request, response);
+		request.getRequestDispatcher("/Login.jsp").forward(request,response);
 	}
-	private void RecuperarDB(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		if(!request.getParameter("NewPass1").equals(request.getParameter("NewPass2"))){
-			request.setAttribute("Error","Contraseñas no coindicen\nDebe reiniciar el proceso");
-			request.getRequestDispatcher("/Recuperar.jsp").forward(request,response);
-		}
-		boolean Sucess =  model.RecuperarContraseña(request.getParameter("NewPass1"),request.getParameter("email"));
-			if(Sucess){
-				request.setAttribute("Error","Contraseña recuperada con exito");
-			}else{
-				request.setAttribute("Error","Ocurrio un error");
-			}
-			request.getRequestDispatcher("/Login.jsp").forward(request, response);
-			
-		}
 	
 }//Clase

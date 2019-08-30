@@ -126,6 +126,7 @@ create table usuario(
     contrasenia varchar(100) not null,
     empresa int,
     tipo int not null,
+    valid bit default 0,
     FOREIGN key (tipo) REFERENCES tipoUsuario(idTipo),
     foreign key (empresa) references empresa(id)
 );
@@ -146,7 +147,7 @@ create table compra(
 );
 
 create table cupon(
-    codigoCupon varchar(13  ) primary KEY,
+    codigoCupon varchar(13) primary KEY,
     oferta int not null,
     compra int not null,
 	canjeo bit not null DEFAULT 0,
@@ -162,7 +163,7 @@ CREATE PROCEDURE loguearse (Usuario VARCHAR(50),Contrasenia VARCHAR(50))
         FROM usuario u
         INNER JOIN tipoUsuario t
         ON u.tipo = t.idTipo
-        WHERE u.correo = Usuario AND u.contrasenia = SHA2(Contrasenia,256); 
+        WHERE (u.correo = Usuario AND u.contrasenia = SHA2(Contrasenia,256)) AND u.valid = 1; 
     END $$
 delimiter ;
 
@@ -184,8 +185,10 @@ delimiter //
     begin
         SET @valid = (select count(*) from Token where Token = TOKEN AND Valid = 1);
         if @valid > 0 then
+            SET @Email = (SELECT Email FROM Token WHERE Token = TOKEN LIMIT 1);
+            UPDATE usuario SET valid = b'1' WHERE correo = @Email;
             UPDATE Token SET Valid = 0 WHERE Token = TOKEN;
-            SELECT Email FROM Token WHERE Token = TOKEN;
+            SELECT CONCAT("true");
         else
             SELECT CONCAT("false");
         end if;
@@ -209,6 +212,6 @@ INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Empresa', 'Administra
 INSERT INTO `tipousuario` (`tipo`, `descripcion`) VALUES ('Cliente', 'Consumidor Final');
 
 /* Usuarios por defecto */
-insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Alejandro","Alejo","alejandroalejo714@gmail.com",SHA2("Password01",256),1);
-insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Denys","Cruz","dennyscruz20@gmail.com",SHA2("Password01",256),2);
-insert into usuario (nombres,apellidos,correo,contrasenia,tipo) VALUES ("Javier","Pablo","javierpablo@gmail.com",SHA2("Password01",256),3);
+insert into usuario (nombres,apellidos,correo,contrasenia,tipo,valid) VALUES ("Alejandro","Alejo","alejandroalejo714@gmail.com",SHA2("Password01",256),1,1);
+insert into usuario (nombres,apellidos,correo,contrasenia,tipo,valid) VALUES ("Denys","Cruz","dennyscruz20@gmail.com",SHA2("Password01",256),2,1);
+insert into usuario (nombres,apellidos,correo,contrasenia,tipo,valid) VALUES ("Javier","Pablo","javierpablo@gmail.com",SHA2("Password01",256),3,1);

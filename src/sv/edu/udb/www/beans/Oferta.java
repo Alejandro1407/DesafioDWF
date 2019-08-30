@@ -16,6 +16,27 @@ public class Oferta {
 	private String Detalles;
 	private int IdEmpresa;
 	private int IdEstado;
+	private String NombreEmpresa;
+	
+	public String getNombreEmpresa() {
+		return NombreEmpresa;
+	}
+	public void setNombreEmpresa(String nombreEmpresa) {
+		NombreEmpresa = nombreEmpresa;
+	}
+	public Oferta(int idOferta,String titulo, double pRegular, double pOferta, Date fInicio, Date fFinal, int limite,String descripcion,String Detalles,String NombreEmpresa) {
+		Id = idOferta;
+		Titulo = titulo;
+		PRegular = pRegular;
+		POferta = pOferta;
+		FInicio = fInicio;
+		FFinal = fFinal;
+		Limite = limite;
+		Descripcion = descripcion;
+		Detalles =  Detalles;
+		this.NombreEmpresa = NombreEmpresa;
+	}
+
 	
 	public int getId() {
 		return Id;

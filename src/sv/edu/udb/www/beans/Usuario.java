@@ -9,6 +9,21 @@ public class Usuario {
 	private String Constraseña;
 	private Integer IdEmpresa;
 	
+	private String Telefono;
+	private String DUI;
+	
+	public String getTelefono() {
+		return Telefono;
+	}
+	public void setTelefono(String telefono) {
+		Telefono = telefono;
+	}
+	public String getDUI() {
+		return DUI;
+	}
+	public void setDUI(String dUI) {
+		DUI = dUI;
+	}
 	public Integer getIdEmpresa() {
 		return IdEmpresa;
 	}

@@ -35,6 +35,7 @@ public class AdministradorEmpresaController extends HttpServlet {
 	protected void ProccessRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		List<Opcion> Opciones = new ArrayList<Opcion>();
 		Opciones.add(new Opcion("DashBoard","/DesafioMVC/Administrador","fas fa-chart-pie",false));
+		Opciones.add(new Opcion("Ofertas","/DesafioMVC/Administrador/Ofertas","fas fa-percent",false));
 		Opciones.add(new Opcion("Empresas","/DesafioMVC/Administrador/Empresa","fas fa-building",true));
 		Opciones.add(new Opcion("Rubros","/DesafioMVC/Administrador/Rubros","fas fa-briefcase",false));
 		Opciones.add(new Opcion("Clientes","/DesafioMVC/Administrador/Clientes","fas fa-users",false));
@@ -65,6 +66,8 @@ public class AdministradorEmpresaController extends HttpServlet {
 						break;
 					case "EditarDB":
 						Actualizar(request,response,Opciones);
+						break;
+					case "Detalles":
 						break;
 					default:
 						request.setAttribute("EmpresasList", model.ObtenerEmpresas());

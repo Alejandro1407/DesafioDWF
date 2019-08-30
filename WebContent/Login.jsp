@@ -110,7 +110,7 @@
                     <button class="btn btn-indigo">Entrar</button>
                     <br>
                     <hr>
-                    <a href="" data-toggle="modal" data-target="#modalLoginForm">¿Olvido su contraseña?</a>
+                    <a href="" data-toggle="modal" data-target="#modalLoginForm">¿Olvido su contraseña?, </a> <a href="" data-toggle="modal" data-target="#modalRegisterForm">Registrarse</a>
                   </div>
 
                 </form>
@@ -133,7 +133,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
     
-    <form action="/DesafioMVC/Login?op=SendMail" method="POST" >
+    <form action="/DesafioMVC/Login?op=Recuperar" method="POST" >
       <div class="modal-header text-center">
         <h4 class="modal-title w-100 font-weight-bold">Recuperar contraseña</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -146,7 +146,7 @@
           <input type="email" name="Email" class="form-control">
           <label data-error="wrong" data-success="right" for="defaultForm-email">Your email</label>
         </div>
-        <p class="grey-text">Se te enviara un enlace para recuperar tu cuenta</p>
+        <p class="grey-text">Se te enviara tu nueva contraseña por Email</p>
       </div>
       <div class="modal-footer d-flex justify-content-center">
         <button type="submit" class="btn btn-default">Recuperar</button>
@@ -156,6 +156,64 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Registrarse</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+      <form action="/DesafioMVC/Login?op=Registro", method="POST">
+        <div class="md-form mb-5">
+          <i class="fas fa-user prefix grey-text"></i>
+          <input type="text" class="form-control" name="Nombres">
+          <label data-error="wrong" data-success="right" for="orangeForm-name" required>Nombres</label>
+        </div>
+        
+        <div class="md-form mb-5">
+          <i class="fas fa-user prefix grey-text"></i>
+          <input type="text" class="form-control" name="Apellidos">
+          <label data-error="wrong" data-success="right" for="orangeForm-name" required>Apellidos</label>
+        </div>
+        	
+        <div class="md-form mb-5">
+          <i class="fas fa-phone prefix grey-text"></i>
+          <input type="text" class="form-control" name="Telefono">
+          <label data-error="wrong" data-success="right" for="orangeForm-name" required>Telefono</label>
+        </div>
+        
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="email" class="form-control" name="Correo">
+          <label data-error="wrong" data-success="right" for="orangeForm-email" required>Correo</label>
+        </div>
+
+        <div class="md-form mb-5">
+          <i class="far fa-id-card prefix grey-text"></i>
+          <input type="text" class="form-control" name="DUI">
+          <label data-error="wrong" data-success="right" for="orangeForm-name" required>DUI</label>
+        </div>
+        
+        <div class="md-form mb-5">
+          <i class="fas fa-key prefix grey-text"></i>
+          <input type="password" class="form-control" name="Contrasenia">
+          <label data-error="wrong" data-success="right" for="orangeForm-name" required>Contraseña</label>
+        </div>
+      </div>
+	      <div class="modal-footer d-flex justify-content-center">
+	        <button class="btn btn-success">Registrarse</button>
+	      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
   </footer>
   <!--/.Footer-->
 	<%@ include file='/Utils/ImportJS.jsp' %>
