@@ -11,7 +11,16 @@ public class Usuario {
 	
 	private String Telefono;
 	private String DUI;
+	private String NombreEmpresa;
 	
+	public String getNombreEmpresa() {
+		return NombreEmpresa;
+	}
+
+	public void setNombreEmpresa(String nombreEmpresa) {
+		NombreEmpresa = nombreEmpresa;
+	}
+
 	public Usuario(){
 		
 	}

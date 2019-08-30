@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
 encoding//WebContent/Error.jsp=UTF-8
 encoding//WebContent/Login.jsp=UTF-8
+encoding//src/sv/edu/udb/www/controllers/ClienteControllers/ClienteController.java=UTF-8
+encoding//src/sv/edu/udb/www/controllers/EmpresaControllers/EmpresaDependienteController.java=UTF-8

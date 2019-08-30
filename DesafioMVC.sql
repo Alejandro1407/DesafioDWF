@@ -148,6 +148,7 @@ create table compra(
 
 create table cupon(
     codigoCupon varchar(13) primary KEY,
+    random int not null,
     oferta int not null,
     compra int not null,
 	canjeo bit not null DEFAULT 0,
