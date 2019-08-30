@@ -2,17 +2,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="sv.edu.udb.www.beans.Opcion"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%!
-    public String getCookie(String cookieName, Cookie[] cookies){
-        for(int i = 0;i < cookies.length;i++){
-            Cookie cookie = cookies[i];
-                if(cookie.getName().equals(cookieName)){
-                    return cookie.getValue();
-                }
-        }
-        return "Null";
-    }
-%>
 <%
      //Para evitar el acceso no authorizado
      
@@ -22,12 +11,6 @@
          response.sendRedirect("/DesafioMVC/Login.jsp?Error=Debe iniciar sesion");
          return;
      }
-     //Codigo para obtener las cookies
-         Cookie[] cookies = null;
-         cookies = request.getCookies();
-         String idEmpleado = getCookie("idEmpleado", cookies);
-         String NombreUser = getCookie("NombreUser", cookies);
-         int idDepartamento = Integer.parseInt(getCookie("idTipo", cookies));
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -52,7 +35,7 @@
             }
             </style>
     </head>
-  <body class="grey lighten-3">
+  <body class="lighten-3">
   
   	<div class="sidebar-fixed position-fixed">
   	  	<a class="logo-wrapper waves-effect">
@@ -79,13 +62,58 @@
       <!--Grid row-->
       <h1 class="text-center">Gestión Rubros</h1>
         <br>
-        Los putos rubros >:v
-      <div class="row wow fadeIn">
-
+        <c:if test="${not empty requestScope.SuccessMsg}">
+        	<p class="alert alert-success">${requestScope.SuccessMsg}</p>
+        </c:if>
+        <c:if test="${not empty requestScope.ErrorMsg}">
+        	<p class="alert alert-danger">${requestScope.ErrorMsg}</p>
+        </c:if>
+        
+       <div class="row wow fadeIn">
+			<a href="/DesafioMVC/Administrador/Rubros?op=Agregar" class="btn btn-outline-success">Agregar</a>
+			<br><br><br>
+		<table class="table" id="TheTable">
+			<thead>	
+				<tr>
+					<th>#</th>
+					<th colspan="2">Nombre</th>
+					<th colspan="4">Descripción</th>
+					<th colspan="2">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+				<c:forEach items="${requestScope.RubrosList}" var="Rubro">
+					<tr>
+						<td>${Rubro.id}</td>
+						<td colspan="2">${Rubro.rubro}</td>
+						<td colspan="4">${Rubro.descripcion}</td>
+						<td><a href="/DesafioMVC/Administrador/Rubros?op=Editar&id=${Rubro.id}" class="btn btn-outline-warning">Editar</a></td>
+						<td><a id="${Rubro.id}" onclick="Eliminar(this)" class="btn btn-outline-danger">Eliminar</a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<c:if test="${empty requestScope.RubrosList}">
+					<p class="alert alert-danger ml-auto mr-auto d-block w-50 text-center">No hay rubros que mostrar</p>
+		</c:if>
       </div>
   </main>
+  
 <footer>
-	<%@ include file='/Utils/ImportJS.jsp' %>
+<%@ include file='/Utils/ImportJS.jsp' %>
+<script>
+	$(document).ready(function () {
+    	$('TheTable').DataTable();
+	});
+	function Eliminar(e) {
+		var r = confirm("¿Seguro que desea Eliminar?");
+		if (r == true) {
+		  location.href = "/DesafioMVC/Administrador/Rubros?op=Eliminar&id=" + e.id;
+		}
+	}
+</script>
+	
 </footer>
     </body>
 </html>

@@ -60,64 +60,35 @@
   <main class="pt-5 mx-lg-5">
     <div class="container-fluid">
       <!--Grid row-->
-      <h1 class="text-center">Gestión Empresas</h1>
+      <h1 class="text-center">Gestión Rubros</h1>
         <br>
-        <c:if test="${not empty requestScope.SuccessMsg}">
-        	<p class="alert alert-success">${requestScope.SuccessMsg}</p>
-        </c:if>
-        <c:if test="${not empty requestScope.ErrorMsg}">
-        	<p class="alert alert-danger">${requestScope.ErrorMsg}</p>
-        </c:if>
-        
-       <div class="row wow fadeIn">
-			<a href="/DesafioMVC/Administrador/Empresa?op=Agregar" class="btn btn-outline-success">Agregar</a>
-			<br><br><br>
-		<table class="table" id="TheTable">
-			<thead>	
-				<tr>
-					<th>Codigo</th>
-					<th>Nombre</th>
-					<th>Dirección</th>
-					<th>Contacto</th>
-					<th>Telefono</th>
-					<th>Rubro</th>
-					<th>Cobro</th>
-					<th colspan="2">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${requestScope.EmpresasList}" var="Empresa">
-					<tr>
-						<td>${Empresa.codigo}</td>
-						<td>${Empresa.nombre}</td>
-						<td>${Empresa.direccion}</td>
-						<td>${Empresa.contacto}</td>
-						<td>${Empresa.telefono}</td>
-						<td>${Empresa.idRubro}</td>
-						<td>${Empresa.cobro}</td>
-						<td class="p-0"><a href="/DesafioMVC/Administrador/Empresa?op=Editar&id=${Empresa.id}" class="btn btn-outline-warning">Editar</a></td>
-						<td class="p-0"><a id="${Empresa.id}" onclick="Eliminar(this)" class="btn btn-outline-danger">Eliminar</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-		<c:if test="${empty requestScope.EmpresasList}">
-					<p class="alert alert-danger ml-auto mr-auto d-block w-50 text-center">No hay empresas que mostrar</p>
-		</c:if>
-      </div>
+        <a href="/DesafioMVC/Administrador/Rubros" class="btn btn-outline-success">Volver</a>
+       <div class="row wow fadeIn d-flex justify-content-center">
+       			<div class="shadow-md p-5">
+					<h3 class="grey-text text-center">Editar Rubro</h3>
+					<form action="/DesafioMVC/Administrador/Rubros?op=EditarDB" method="POST">
+					<input type="hidden" name="id" value="${requestScope.Rubro.id}">
+						<div class="md-form">
+			                   <label for="email">Nombre:</label>
+			                   <input type="text" class="form-control" name="Nombre"  value="${requestScope.Rubro.rubro}"required>
+		                 </div>	
+		                 <div class="md-form">
+			                   <label for="email">Descripcion:</label>
+			                   <input type="text" class="form-control" name="Descripcion" value="${requestScope.Rubro.descripcion}" required>
+		                 </div>
+						<button type="submit" class="btn btn-outline-success">Actualizar</button>
+					</form>
+				</div>
+			</div>
+		</div>
   </main>
+  
 <footer>
 <%@ include file='/Utils/ImportJS.jsp' %>
 <script>
 	$(document).ready(function () {
     	$('TheTable').DataTable();
 	});
-	function Eliminar(e) {
-		var r = confirm("¿Seguro que desea Eliminar?");
-		if (r == true) {
-		  location.href = "/DesafioMVC/Administrador/Empresa?op=Eliminar&id=" + e.id;
-		}
-	}
 </script>
 	
 </footer>

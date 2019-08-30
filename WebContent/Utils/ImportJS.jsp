@@ -8,6 +8,8 @@
 	 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/bootstrap.js"></script>
 	 <!-- MDB core JavaScript -->
 	 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/mdb.js"></script>
+	 <!-- MDB core JavaScript -->
+	 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/addons/datatables.js"></script>
 	 <!-- Initializations -->
 	 <script type="text/javascript">
 	   // Animations initialization

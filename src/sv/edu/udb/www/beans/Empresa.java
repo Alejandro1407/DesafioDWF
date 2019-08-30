@@ -2,6 +2,7 @@ package sv.edu.udb.www.beans;
 
 public class Empresa {
 
+	private int id;
 	private String Codigo;
 	private String Nombre;
 	private String Direccion;
@@ -10,6 +11,26 @@ public class Empresa {
 	private int IdRubro;
 	private double Cobro;
 	
+	public Empresa(int id, String codigo, String nombre, String direccion, String contacto, String telefono,
+			int idRubro, double cobro) {
+		this.id = id;
+		this.Codigo = codigo;
+		this.Nombre = nombre;
+		this.Direccion = direccion;
+		this.Contacto = contacto;
+		this.Telefono = telefono;
+		this.IdRubro = idRubro;
+		this.Cobro = cobro;
+	}
+	public Empresa(){
+		
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getCodigo() {
 		return Codigo;
 	}

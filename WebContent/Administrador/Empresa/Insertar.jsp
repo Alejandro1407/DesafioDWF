@@ -62,62 +62,59 @@
       <!--Grid row-->
       <h1 class="text-center">Gestión Empresas</h1>
         <br>
-        <c:if test="${not empty requestScope.SuccessMsg}">
-        	<p class="alert alert-success">${requestScope.SuccessMsg}</p>
-        </c:if>
-        <c:if test="${not empty requestScope.ErrorMsg}">
-        	<p class="alert alert-danger">${requestScope.ErrorMsg}</p>
-        </c:if>
-        
-       <div class="row wow fadeIn">
-			<a href="/DesafioMVC/Administrador/Empresa?op=Agregar" class="btn btn-outline-success">Agregar</a>
-			<br><br><br>
-		<table class="table" id="TheTable">
-			<thead>	
-				<tr>
-					<th>Codigo</th>
-					<th>Nombre</th>
-					<th>Dirección</th>
-					<th>Contacto</th>
-					<th>Telefono</th>
-					<th>Rubro</th>
-					<th>Cobro</th>
-					<th colspan="2">Acciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach items="${requestScope.EmpresasList}" var="Empresa">
-					<tr>
-						<td>${Empresa.codigo}</td>
-						<td>${Empresa.nombre}</td>
-						<td>${Empresa.direccion}</td>
-						<td>${Empresa.contacto}</td>
-						<td>${Empresa.telefono}</td>
-						<td>${Empresa.idRubro}</td>
-						<td>${Empresa.cobro}</td>
-						<td class="p-0"><a href="/DesafioMVC/Administrador/Empresa?op=Editar&id=${Empresa.id}" class="btn btn-outline-warning">Editar</a></td>
-						<td class="p-0"><a id="${Empresa.id}" onclick="Eliminar(this)" class="btn btn-outline-danger">Eliminar</a></td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-		<c:if test="${empty requestScope.EmpresasList}">
-					<p class="alert alert-danger ml-auto mr-auto d-block w-50 text-center">No hay empresas que mostrar</p>
-		</c:if>
-      </div>
+        <a href="/DesafioMVC/Administrador/Empresa" class="btn btn-outline-success">Volver</a>
+       <div class="row wow fadeIn d-flex justify-content-center">
+       			<div class="shadow-lg w-50 p-5">
+					<h3 class="grey-text text-center">Agregar Empresa</h3>
+					<form action="/DesafioMVC/Administrador/Empresa?op=AgregarDB" method="POST">
+					
+						<div class="md-form">
+			                   <label for="email">Nombre:</label>
+			                   <input type="text" class="form-control" name="Nombre" required>
+		                 </div>	
+		                 <div class="md-form">
+			                   <label for="email">Direccion:</label>
+			                   <input type="text" class="form-control" name="Direccion" required>
+		                 </div>
+		                    <div class="md-form">
+			                   <label for="email">Contacto:</label>
+			                   <input type="text" class="form-control" name="Contacto" required>
+		                 </div>
+		                    <div class="md-form">
+			                   <label for="email">Telefono:</label>
+			                   <input type="text" class="form-control" name="Telefono" required>
+		                 </div>
+		                  
+			                   <label for="email">Rubro:</label>
+			                   <select name="idRubro" class="custom-select">
+			                   	<c:forEach items="${requestScope.RubrosList}" var="Rubro">
+		                 			<option value="${Rubro.id}">${Rubro.rubro}</option>
+		                		 </c:forEach>
+			                   </select>
+		                 
+		                  <div class="md-form">
+			                   <label for="email">Cobro:</label>
+			                   <input type="number" class="form-control" min="0" max="10000" step="0.1" name="Cobro" required>
+		                 </div>
+		                 <c:if test="${not empty requestScope.RubrosList}">
+							<button type="submit" class="btn btn-outline-success">Añadir</button>
+						 </c:if>
+						   <c:if test="${empty requestScope.RubrosList}">
+						   <br><br>
+							<p class="grey-text">No puede agregarse una empresa sin rubro</p>
+						 </c:if>
+					</form>
+				</div>
+			</div>
+		</div>
   </main>
+  
 <footer>
 <%@ include file='/Utils/ImportJS.jsp' %>
 <script>
 	$(document).ready(function () {
     	$('TheTable').DataTable();
 	});
-	function Eliminar(e) {
-		var r = confirm("¿Seguro que desea Eliminar?");
-		if (r == true) {
-		  location.href = "/DesafioMVC/Administrador/Empresa?op=Eliminar&id=" + e.id;
-		}
-	}
 </script>
 	
 </footer>

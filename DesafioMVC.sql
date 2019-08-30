@@ -10,7 +10,7 @@ CREATE TABLE rubro(
 
 create table empresa(
 	id int auto_increment primary key,
-    codigoEmpresa varchar(6),
+    codigoEmpresa varchar(6) UNIQUE,
     nombre varchar(100) not null,
     direccion varchar(200) not null,
     contacto varchar(100) not null,
@@ -53,8 +53,8 @@ create table oferta(
     fechaFin datetime not null,
     fechaLimite datetime not null ,
     limiteCupones int null,
-    descripcion varchar(200) not null default 'Sin descripcion',
-    otrosDetalles varchar(200) not null default 'Sin detalles',
+    descripcion varchar(200) null default null,
+    otrosDetalles varchar(200) null default null,
     empresa int not null,
     estado int not null default 1,
     foreign key(estado) references estado(idEstado),
@@ -135,8 +135,6 @@ create table compra(
     FOREIGN key (cliente) REFERENCES cliente(usuario)
 );
 
-
-
 create table cupon(
 	id int primary key auto_increment,
     random int,
@@ -144,6 +142,7 @@ create table cupon(
     oferta int not null,
     compra int not null,
 	canjeo bit not null DEFAULT 0,
+    foreign key(oferta) references oferta(idOferta),
     FOREIGN key (compra) REFERENCES compra(idCompra)
 );
 
