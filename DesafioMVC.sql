@@ -204,6 +204,21 @@ CREATE TABLE Token(
 	PRIMARY KEY(id)
 );
 
+delimiter //
+create procedure ingresarCupon(IN _oferta int, _compra int, _canjeo int)
+begin
+    set @_codemp = (select codigoEmpresa  from empresa join oferta on oferta.empresa = empresa.id where oferta.idOferta = _oferta limit 1);
+    set @random = LPAD(FLOOR(1 + RAND() * (9999999 - 1 + 1)),7,'0');
+    set @codCupon = concat(@_codemp,@random);
+    
+    while @random not in (select random from cupon) do
+		begin
+			insert into cupon (random, codigoCupon, oferta, compra, canjeo)
+            values (@random, @codCupon, _oferta, _compra, _canjeo);
+        end;
+	end while;
+end//
+delimiter;
 
 
 /* Tipos de Usuarios */ 
